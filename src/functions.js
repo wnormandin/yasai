@@ -7,6 +7,13 @@
  * mod.thing == 'a thing'; // true
  */
  
+const spawnControl = require("./spawnControl");
+const turretControl = require("./turretControl");
+const constants = require("./constants");
+const builder = require("./builder");
+const repairer = require("./repairer");
+const harvester = require("./harvester");
+
 function parseSpawnError(error, creepName) {
     switch(error) {
             case -1:
@@ -29,9 +36,9 @@ function parseSpawnError(error, creepName) {
             default:
                 console.log(`An unknown error was encountered: ${error}`);
         }
-};
+}
 
-constants = require('constants');
+
 module.exports = {
     parseSpawnError: parseSpawnError,
     spawnCreeps: function(spawnName, count, creepDefinition) {
@@ -73,6 +80,27 @@ module.exports = {
         if(targets.length > 0) {
             if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets[0]);
+            }
+        }
+    },
+    gameLoop: function () {
+        // Spawn any missing creeps (creep list defined in spawnControl module)
+        for (var spawn in Game.spawns) {
+            spawnControl.run(Game.spawns[spawn].name);
+        }
+
+        // Attack invaders if necessary
+        turretControl.run("W4N8");
+
+        // Execute actions based on creep names (perhaps there is a better way to do this)
+        for (const c in Game.creeps) {
+            mycreep = Game.creeps[c];
+            if (mycreep.memory.role === constants.CreepType.Builder) {
+                builder.run(mycreep);
+            } else if (mycreep.memory.role === constants.CreepType.Repairer) {
+                repairer.run(mycreep);
+            } else {
+                harvester.run(mycreep);
             }
         }
     }

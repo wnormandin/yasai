@@ -1,4 +1,4 @@
-functions = require('functions');
+functions = require('src/functions');
 var roleBuilder = {
 
     /** @param {Creep} creep **/
@@ -18,7 +18,7 @@ var roleBuilder = {
             var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
             if(targets.length) {
                 targets.sort(function(a,b){return a.progress > b.progress ? -1 : 1});
-                if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+                if(creep.build(targets[0]) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {reusePath: 10});
                 }
             }
