@@ -1,4 +1,4 @@
-functions = require('src/functions');
+functions = require('functions');
 var roleRepairer = {
 
     /** @param {Creep} creep **/
