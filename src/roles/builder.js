@@ -1,4 +1,4 @@
-functions = require('src/functions');
+const functions = require('../utils/functions');
 var roleBuilder = {
 
     /** @param {Creep} creep **/

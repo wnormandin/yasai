@@ -1,18 +1,9 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('functions');
- * mod.thing == 'a thing'; // true
- */
- 
-const spawnControl = require("./spawnControl");
-const turretControl = require("./turretControl");
+const spawnControl = require("../controllers/spawnControl");
+const turretControl = require("../controllers/turretControl");
 const constants = require("./constants");
-const builder = require("./builder");
-const repairer = require("./repairer");
-const harvester = require("./harvester");
+const builder = require("../roles/builder");
+const repairer = require("../roles/repairer");
+const harvester = require("../roles/harvester");
 
 function parseSpawnError(error, creepName) {
     switch(error) {

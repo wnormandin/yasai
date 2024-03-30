@@ -1,2 +1,2 @@
-var functions = require('src/functions');
+const functions = require('./utils/functions');
 module.exports.loop = functions.gameLoop;

@@ -1,15 +1,6 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('spawnControl');
- * mod.thing == 'a thing'; // true
- */
- 
-var constants = require('src/constants');
-var functions = require('src/functions');
-var spawnControl = {
+const constants = require('../utils/constants');
+const functions = require('../utils/functions');
+const spawnControl = {
     run: function(spawnName) {
         if (Game.creeps.length >= constants.MAX_CREEP_SIZE) {
             return;
