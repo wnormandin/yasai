@@ -7,8 +7,8 @@
  * mod.thing == 'a thing'; // true
  */
  
-var constants = require('constants');
-var functions = require('functions');
+var constants = require('src/constants');
+var functions = require('src/functions');
 var spawnControl = {
     run: function(spawnName) {
         if (Game.creeps.length >= constants.MAX_CREEP_SIZE) {

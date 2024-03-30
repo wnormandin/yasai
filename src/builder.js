@@ -1,4 +1,4 @@
-functions = require('functions');
+functions = require('src/functions');
 var roleBuilder = {
 
     /** @param {Creep} creep **/
