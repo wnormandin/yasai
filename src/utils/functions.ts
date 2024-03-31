@@ -1,13 +1,12 @@
-import { DEBUGGING } from "./constants";
+import { DEBUGGING, CreepType } from "./constants";
 import { controlTurrets } from "../controllers/turretControl";
+import { handleSpawns } from "../controllers/spawnControl";
+import { roleBuilder } from "../roles/builder";
+import { roleRepairer } from "../roles/repairer";
+import { roleHarvester } from "../roles/harvester";
+import { roleAttacker } from "../roles/attacker";
 
-import spawnControl = require("../controllers/spawnControl");
-
-import builder = require("../roles/builder");
-import repairer = require("../roles/repairer");
-import harvester = require("../roles/harvester");
-
-export function parseSpawnError(error, creepName) {
+export function parseSpawnError(error: number, creepName: string) {
     switch(error) {
             case -1:
                 console.log('You do not own this spawner');
@@ -31,13 +30,15 @@ export function parseSpawnError(error, creepName) {
         }
 }
 
-export function spawnCreeps(spawnName, count, creepDefinition) {
-    var creepRole = creepDefinition[0];
-    var creepBody = creepDefinition[1];
+export function spawnCreeps(spawnName: string, count: number, creepDefinition: [string, Array<number>]) {
+    let creepRole, creepBody;
+    [creepRole, creepBody] = creepDefinition;
+
     for (let n = count; n > 0; n--) {
-        var creepName = `${creepRole} ${n}`;
+        let creepName = `${creepRole} ${n}`;
         console.log('Spawning creep ' + creepName);
-        var result = Game.spawns[spawnName].spawnCreep(creepBody, creepName, {memory: {role: creepRole}});
+
+        let result = Game.spawns[spawnName].spawnCreep(creepBody, creepName, {memory: {role: creepRole}});
 
         if (DEBUGGING && result !== 0) {
             parseSpawnError(result, creepName);
@@ -47,29 +48,34 @@ export function spawnCreeps(spawnName, count, creepDefinition) {
     }
 }
 
-export function harvestEnergy(creep, sourceObjectId) {
+export function harvestEnergy(creep: Creep, sourceObjectId: string) {
     // make an easy reference to the energy source
-    var source = Game.getObjectById(sourceObjectId);
+    let source: null | Source = Game.getObjectById(sourceObjectId);
+    if (!source) {
+        return;
+    }
+
     // move my creep to the energy source and harvest energy
     creep.moveTo(source);
     creep.harvest(source);
 }
 
-export function upgradeRoomController(creep) {
+export function upgradeRoomController(creep: Creep) {
     // make an easy reference to the room's controller
-    var controller = creep.room.controller;
+    let controller: StructureController | undefined = creep.room.controller;
     // move my creep to the controller and upgrade it
-    creep.moveTo(controller);
-    creep.upgradeController(controller);
+    if (controller) {
+        creep.moveTo(controller);
+        creep.upgradeController(controller);
+    }
 }
 
-export function repairBuilding(creep) {
+export function repairBuilding(creep: Creep) {
     const targets = creep.room.find(FIND_STRUCTURES, {
         filter: object => object.hits < object.hitsMax
     });
 
     targets.sort((a,b) => a.hits - b.hits);
-
     if(targets.length > 0) {
         if (creep.repair(targets[0]) === ERR_NOT_IN_RANGE) {
             creep.moveTo(targets[0]);
@@ -80,7 +86,7 @@ export function repairBuilding(creep) {
 export function gameLoop() {
     // Spawn any missing creeps (creep list defined in spawnControl module)
     for (var spawn in Game.spawns) {
-        spawnControl.run(Game.spawns[spawn].name);
+        handleSpawns(Game.spawns[spawn].name);
     }
 
     // Attack invaders if necessary
@@ -88,13 +94,15 @@ export function gameLoop() {
 
     // Execute actions based on creep names (perhaps there is a better way to do this)
     for (const c in Game.creeps) {
-        mycreep = Game.creeps[c];
-        if (mycreep.memory.role === constants.CreepType.Builder) {
-            builder.run(mycreep);
-        } else if (mycreep.memory.role === constants.CreepType.Repairer) {
-            repairer.run(mycreep);
+        let mycreep = Game.creeps[c];
+        if (mycreep.memory.role === CreepType.Builder) {
+            roleBuilder(mycreep);
+        } else if (mycreep.memory.role === CreepType.Repairer) {
+            roleRepairer(mycreep);
+        } else if (mycreep.memory.role === CreepType.Attacker) {
+            roleAttacker(mycreep);
         } else {
-            harvester.run(mycreep);
+            roleHarvester(mycreep);
         }
     }
 }

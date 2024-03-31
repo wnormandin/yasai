@@ -1,15 +1,8 @@
-var roleAttacker = {
-
-    /** @param {Creep} creep **/
-    run: function(creep) {
-        var enemies = creep.room.find(Game.HOSTILE_CREEPS);
-        
-        if (enemies) {
-            console.log(`Attacking ${enemies[0].name}`);
-            attacker.moveTo(enemies[0]);
-            attacker.attack(enemies[0]);
-        }
+export function roleAttacker(creep: Creep) {
+    let enemies = creep.room.find(FIND_HOSTILE_CREEPS);
+    if (enemies) {
+        console.log(`Attacking ${enemies[0].name}`);
+        creep.moveTo(enemies[0]);
+        creep.attack(enemies[0]);
     }
-};
-
-module.exports = roleAttacker;
+}

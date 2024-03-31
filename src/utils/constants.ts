@@ -12,10 +12,10 @@ export const CreepBody = {
     Attacker: [ATTACK, RANGED_ATTACK, MOVE],
 };
 
-export const MINER_DEFINITION = [CreepType.Miner, CreepBody.Miner];
-export const BUILDER_DEFINITION = [CreepType.Builder, CreepBody.Builder];
-export const REPAIRER_DEFINITION = [CreepType.Repairer, CreepBody.Repairer];
-export const ATTACKER_DEFINITION = [CreepType.Attacker, CreepBody.Attacker];
+export const MINER_DEFINITION: [string, Array<number>] = [CreepType.Miner, CreepBody.Miner];
+export const BUILDER_DEFINITION: [string, Array<number>] = [CreepType.Builder, CreepBody.Builder];
+export const REPAIRER_DEFINITION: [string, Array<number>] = [CreepType.Repairer, CreepBody.Repairer];
+export const ATTACKER_DEFINITION: [string, Array<number>] = [CreepType.Attacker, CreepBody.Attacker];
 
 export const MINER_COUNT = 5;
 export const BUILDER_COUNT = 1;

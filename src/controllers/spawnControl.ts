@@ -11,8 +11,8 @@ import {
 } from "../utils/constants";
 import { spawnCreeps } from "../utils/functions";
 
-export function handleSpawns(spawnName: String) {
-    if (Game.creeps.length >= MAXCREEPS) {
+export function handleSpawns(spawnName: string) {
+    if (Object.keys(Game.creeps).length >= MAXCREEPS) {
         return;
     }
     spawnCreeps(spawnName, MINER_COUNT, MINER_DEFINITION);

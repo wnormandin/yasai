@@ -1,2 +1,2 @@
-import functions = require('./utils/functions');
-module.exports.loop = functions.gameLoop;
+import { gameLoop } from "./utils/functions";
+module.exports.loop = gameLoop;
