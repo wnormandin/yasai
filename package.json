@@ -10,5 +10,14 @@
     "type": "git",
     "url": "https://github.com/wnormandin/yasai.git"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "grunt": "^1.6.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-screeps": "^1.5.0",
+    "grunt-string-replace": "^1.3.3",
+    "rollup": "^4.13.2",
+    "screeps-module-manager": "^0.0.1"
+  }
 }
